@@ -382,10 +382,14 @@ body.is-ready .fv-sub{transition-delay:.4s}
 .kh-row dt{display:flex;align-items:baseline;gap:10px}
 .kh-row dt::before{content:"";flex:none;width:10px;height:2px;background:var(--rec);transform:translateY(-4px)}
 /* お問い合わせ：フォームへ進むボタン */
-.ct-go-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px}
-.ct-form-head{font-size:clamp(20px,2vw,26px)}
-.ct-go-note{font-size:14.5px;color:rgba(255,255,255,.9)}
-.ct-go-list{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
+/* フォームの見出し＝フィルムの帯（黒地・上下にフィルムの穴の模様）。2026-11-14 依頼者「帯みたいに」 */
+.ct-go-head{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:24px 28px;background:var(--ink);color:#fff}
+.ct-go-head::before,.ct-go-head::after{content:"";position:absolute;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,rgba(243,241,236,.38) 0 10px,transparent 10px 22px);pointer-events:none}
+.ct-go-head::before{top:7px}.ct-go-head::after{bottom:7px}
+.sec-cta .ct-go-head .rec-dot{width:10px;height:10px;background:var(--rec);animation-name:recBlink}
+.ct-form-head{font-size:clamp(19px,1.8vw,24px);letter-spacing:.08em}
+.ct-go-note{margin-left:auto;font-size:14px;color:#cfcac1}
+.ct-go-list{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
 /* フォームへの入口＝横長のファインダーの帯（左に写真の小窓・中に名前・右に矢印）。2026-11-14 夜 */
 .ct-go-btn{position:relative;display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:24px;padding:14px 22px 14px 14px;background:var(--ink);color:var(--paper);text-decoration:none;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
 .ct-go-btn::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--rec);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
@@ -489,6 +493,8 @@ body.is-ready .fv-sub{transition-delay:.4s}
   .ct-go-title{font-size:18px}
   .ct-go-lead{font-size:12.5px;line-height:1.6}
   .ct-go-arrow{width:36px;height:36px}
+  .ct-go-head{padding:22px 18px;gap:4px 12px}
+  .ct-go-note{margin-left:0;flex-basis:100%;font-size:12.5px}
   .tl-list{grid-template-columns:1fr;gap:36px}
   .tl-item{padding-left:32px;border-left:1px solid var(--line)}
   .tl-mark{position:absolute;left:-8px;top:4px;margin:0}
