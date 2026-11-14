@@ -210,7 +210,22 @@
 			});
 			var note = f.querySelector('.ct-note');
 			if (ng) { ng.focus(); if (note) { note.classList.add('is-on'); note.textContent = '必須の項目を入力してください。'; } return; }
-			if (note) { note.classList.add('is-on'); note.textContent = '試作のため、まだ送信されません（本番では担当者に届きます）。'; }
+			var to = f.getAttribute('data-to');
+			if (!to) { if (note) { note.classList.add('is-on'); note.textContent = '試作のため、まだ送信されません（本番では担当者に届きます）。'; } return; }
+			/* 届け先があるとき：入力内容を本文にしたメールの下書きを開く */
+			var lines = [], seen = {};
+			Array.prototype.slice.call(f.querySelectorAll('input, textarea')).forEach(function (el) {
+				var nm = el.name; if (!nm || seen[nm]) return;
+				var box = el.closest('fieldset'), lb = box ? box.querySelector('legend') : el.closest('label').querySelector('.ct-lb');
+				var head = lb ? lb.textContent.replace('必須', '').trim() : nm, val;
+				if (el.type === 'checkbox' || el.type === 'radio') {
+					seen[nm] = 1;
+					val = Array.prototype.slice.call(f.querySelectorAll('[name="' + nm + '"]:checked')).map(function (c) { return c.value; }).join('、');
+				} else { val = el.value.trim(); }
+				lines.push('■' + head + '\n' + (val || '（未入力）'));
+			});
+			location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(f.getAttribute('data-subject') || 'ホームページからのお問い合わせ') + '&body=' + encodeURIComponent(lines.join('\n\n'));
+			if (note) { note.classList.add('is-on'); note.textContent = 'メールが開きました。内容を確かめて、そのまま送信してください。'; }
 		});
 	});
 
