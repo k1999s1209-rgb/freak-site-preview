@@ -167,6 +167,45 @@
 		addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
 	}
 
+	/* ---------- お問い合わせ：フォーム 2 種の切り替え（2026-11-14） ---------- */
+	var ctTabs = Array.prototype.slice.call(document.querySelectorAll('.ct-tab'));
+	if (ctTabs.length) {
+		var ctShow = function (tab, focus) {
+			ctTabs.forEach(function (t) {
+				var on = t === tab;
+				t.setAttribute('aria-selected', on ? 'true' : 'false');
+				t.tabIndex = on ? 0 : -1;
+				var pn = document.getElementById(t.getAttribute('aria-controls'));
+				if (pn) pn.hidden = !on;
+			});
+			if (focus) tab.focus();
+		};
+		ctTabs.forEach(function (t, i) {
+			t.addEventListener('click', function () { ctShow(t); });
+			t.addEventListener('keydown', function (e) {
+				if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+					e.preventDefault();
+					ctShow(ctTabs[(i + (e.key === 'ArrowRight' ? 1 : ctTabs.length - 1)) % ctTabs.length], true);
+				}
+			});
+		});
+	}
+	/* 試作のフォーム（data-demo）は送信せず、必須の空欄に印を付けて案内だけ出す */
+	Array.prototype.slice.call(document.querySelectorAll('form.ct-fields[data-demo]')).forEach(function (f) {
+		f.addEventListener('submit', function (e) {
+			e.preventDefault();
+			var ng = null;
+			Array.prototype.slice.call(f.querySelectorAll('[required]')).forEach(function (el) {
+				var bad = !el.value.trim() || (el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim()));
+				el.classList.toggle('is-ng', bad);
+				if (bad && !ng) ng = el;
+			});
+			var note = f.querySelector('.ct-note');
+			if (ng) { ng.focus(); if (note) { note.classList.add('is-on'); note.textContent = '必須の項目を入力してください。'; } return; }
+			if (note) { note.classList.add('is-on'); note.textContent = '試作のため、まだ送信されません（本番では担当者に届きます）。'; }
+		});
+	});
+
 	/* ---------- ここから下に、この案件の演出を足す ----------
 	   例）hasGSAP && !reduce のときだけ GSAP の演出を組む。無いときは上の受け皿だけで動く。 */
 })();
