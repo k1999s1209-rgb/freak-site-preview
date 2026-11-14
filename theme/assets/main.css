@@ -312,9 +312,16 @@ html.js .tl-item.reveal{transition-delay:calc(var(--i) * 120ms)}
   .st-grid{grid-template-columns:1fr;gap:0}
   .st-side{display:none}
   .st-cols{grid-template-columns:1fr;gap:40px}
-  .sv-card{position:relative;top:auto;grid-template-columns:1fr;gap:24px;min-height:0;padding:16px 16px 28px;box-shadow:none}
-  .sv-fig .frame-ph{min-height:0;aspect-ratio:16/10}
-  .sv-body{padding:0 8px}
+  /* スマホ・タブレットも PC と同じく「カードが上に重なっていく」動き（2026-11-14 指摘）。画面の高さに収まるよう詰める */
+  .sv-stack{gap:28px}
+  .sv-card{top:calc(var(--hdr) + 12px + var(--n) * 14px);grid-template-columns:1fr;gap:18px;min-height:0;padding:14px 14px 22px;box-shadow:0 -16px 32px rgba(0,0,0,.4)}
+  .sv-fig{padding:8px}
+  .sv-fig .frame-ph{min-height:0;aspect-ratio:16/8}
+  .sv-body{padding:0 6px}
+  .sv-title{margin-top:10px}
+  .sv-text{font-size:14.5px;line-height:1.85;margin-top:12px}
+  .sv-tags{gap:8px;margin-top:16px}
+  .sv-tags li{font-size:12.5px;padding:4px 11px}
   .tl-ruler{display:none}
   .tl-list{grid-template-columns:1fr 1fr;gap:40px 28px}
   .tl-mark{position:static;display:block;margin-bottom:14px}
@@ -362,11 +369,12 @@ html.js .tl-item.reveal{transition-delay:calc(var(--i) * 120ms)}
   .cta-box{padding:32px 18px}
   .cta-tel{font-size:25px;gap:10px}
   .sv-title{font-size:22px}
-  .sv-card{padding:12px 12px 24px}
+  .sv-card{padding:10px 10px 18px}
   .fv-btns .btn{padding-left:20px}
 }
 @media (max-width:960px) and (max-height:700px) and (orientation:landscape){
   .sec-fv{padding-top:calc(var(--hdr) + 24px)}
+  .sv-card{position:relative;top:auto;box-shadow:none} /* 横向きスマホは高さが足りず重ねると読めない→縦に並べる */
 }
 @media (prefers-reduced-motion:reduce){
   html.js .intro{display:none}
