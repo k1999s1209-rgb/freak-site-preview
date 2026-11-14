@@ -99,11 +99,19 @@
 				if (!vf) return;
 				var r = vf.getBoundingClientRect();
 				var W = innerWidth, H = innerHeight, m = 24, s = 44;
+				// スマホではファインダーが画面の下にある → 同じ大きさの枠を画面の真ん中に置いて寄せる（角と文字が画面の外へ出ないように）
+				if (r.top < m || r.bottom > H - m) {
+					var t = Math.max(m, (H - r.height) / 2);
+					r = { left: r.left, right: r.right, top: t, bottom: t + Math.min(r.height, H - m * 2) };
+				}
 				var set = function (sel, x, y) { var c = intro.querySelector(sel); if (c) c.style.transform = 'translate(' + x + 'px,' + y + 'px)'; };
 				set('.c-tl', r.left - m, r.top - m);
 				set('.c-tr', r.right - (W - m), r.top - m);
 				set('.c-bl', r.left - m, r.bottom - (H - m));
 				set('.c-br', r.right - (W - m), r.bottom - (H - m));
+				// 時刻の文字も角と一緒にファインダーの真ん中へ（2026-11-14 依頼者「文字の位置と寄ってくる位置がずれている」）
+				var tc = intro.querySelector('.intro-tc');
+				if (tc) tc.style.transform = 'translate(calc(-50% + ' + ((r.left + r.right) / 2 - W / 2) + 'px), calc(-50% + ' + ((r.top + r.bottom) / 2 - H / 2) + 'px))';
 			}, 900);
 			// ③ 幕
 			setTimeout(function () {
