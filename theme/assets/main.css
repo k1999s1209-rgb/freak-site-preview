@@ -257,14 +257,15 @@ html.js .tl-item.reveal{transition-delay:calc(var(--i) * 120ms)}
 /* ---------- SCENE 05 お問い合わせ ---------- */
 .sec-cta{padding-block:140px}
 .cta-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
-.sec-cta .sec-scene{color:var(--ink)}
-.sec-cta .sec-no{color:var(--ink)}
-.sec-cta .rec-dot{background:var(--ink)}
-@keyframes recBlinkInk{50%{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink)}}
+/* 朱の地に黒文字は読みづらい（2026-11-14 指摘）→ 地を深い朱にして文字を白に（白との差 5.3：1） */
+.sec-cta.bg-rec{background:#C8360F;color:#fff}
+.sec-cta .sec-scene,.sec-cta .sec-no,.sec-cta .sec-en{color:#fff}
+.sec-cta .rec-dot{background:#fff}
+@keyframes recBlinkInk{50%{background:transparent;box-shadow:inset 0 0 0 1.5px #fff}}
 .sec-cta .rec-dot{animation-name:recBlinkInk}
 .sec-cta .sec-en{font-size:clamp(44px,5vw,72px)}
-.cta-title{font-size:clamp(32px,3.6vw,52px);font-weight:700;line-height:1.35;color:var(--ink);margin-top:36px}
-.cta-lead{font-size:17px;line-height:1.95;color:var(--ink);margin-top:24px;max-width:30em}
+.cta-title{font-size:clamp(32px,3.6vw,52px);font-weight:700;line-height:1.35;color:#fff;margin-top:36px}
+.cta-lead{font-size:17px;line-height:1.95;color:#fff;font-weight:500;margin-top:24px;max-width:30em}
 .cta-grid>*{min-width:0}
 .cta-box{background:var(--ink);color:var(--paper);padding:48px 44px;position:relative}
 .cta-box::before{content:"";position:absolute;inset:12px;border:1px solid rgba(243,241,236,.18);pointer-events:none}
