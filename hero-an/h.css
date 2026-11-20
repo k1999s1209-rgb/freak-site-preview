@@ -1,0 +1,12 @@
+/* H案 夜の青い光：ロゴの紺を地の色に。ロゴは色のまま大きく光らせ、白い見出しがその上に重なる */
+:root{--bg:radial-gradient(90% 80% at 70% 46%,#16286A 0,#0B1338 42%,#060914 100%);--bg-solid:#0A1030;--ink:#FFFFFF;--text:#C9CEE0}
+.hd-brand img{filter:brightness(0) invert(1)}
+.bloom{position:absolute;right:-6vw;top:50%;width:min(80vw,1240px);aspect-ratio:1.6;transform:translateY(-50%);background:radial-gradient(closest-side,rgba(64,128,255,.5),rgba(40,90,230,.16) 55%,transparent 100%);animation:bl 8s ease-in-out infinite alternate}
+@keyframes bl{to{opacity:.6;transform:translateY(-50%) scale(1.1)}}
+.mark{position:absolute;right:-8vw;top:50%;width:min(80vw,1240px);transform:translateY(-52%);animation:mk 1.8s cubic-bezier(.19,1,.22,1) both,flo 9s ease-in-out 1.8s infinite alternate}
+.mark img{display:block;width:100%;height:auto;filter:drop-shadow(0 0 50px rgba(56,120,255,.55))}
+@keyframes mk{from{opacity:0;transform:translateY(-46%) scale(.94)}}
+@keyframes flo{to{transform:translateY(-54%)}}
+.h1{text-shadow:0 2px 30px rgba(6,9,20,.55)}
+.sub{text-shadow:0 1px 16px rgba(6,9,20,.7)}
+@media (max-width:820px){.mark,.bloom{right:-34vw;top:30%;width:150vw}}

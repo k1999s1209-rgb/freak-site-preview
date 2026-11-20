@@ -1,0 +1,9 @@
+/* I案 絹の帯：ロゴの F の流れる線を、やわらかい布の帯にして画面を横切らせる。見出しは明朝で帯に重ねる */
+:root{--bg:linear-gradient(180deg,#F6F5F2,#ECEBE7);--bg-solid:#F4F3F0;--ink:#16171C;--text:#3C3D44}
+.h1{font-family:"Shippori Mincho",serif;font-weight:600;letter-spacing:.05em}
+.art svg{position:absolute;inset:0;width:100%;height:100%}
+.rb{animation:sway var(--t,14s) ease-in-out infinite alternate;transform-origin:50% 50%}
+.rb1{--t:15s}.rb2{--t:11s}.rb3{--t:18s}
+@keyframes sway{to{transform:translate(-40px,22px) rotate(-1.4deg)}}
+.art{animation:ai 2s ease both}
+@keyframes ai{from{opacity:0;transform:translateX(60px)}}
