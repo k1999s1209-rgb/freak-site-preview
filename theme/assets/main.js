@@ -396,3 +396,26 @@
 		node.parentNode.replaceChild(f, node);
 	});
 })();
+/* 2026-11-27 事業内容のカードが画面より縦に長いと、止まった時に下の行（タグ）が画面の外に残り、次のカードに隠れる。
+   → 長いカードだけ、下の端が画面の下に来た所で止める（止まる位置を上へずらす）。画面に収まるカードは今まで通り。
+   スクロール中は何もしない（読み込み・画面の大きさが変わった時だけ測る）。 */
+(function () {
+	var cards = document.querySelectorAll('.sv-card');
+	if (!cards.length) return;
+	var fit = function () {
+		var vh = window.innerHeight, i, c, base, h;
+		for (i = 0; i < cards.length; i++) cards[i].style.top = '';
+		for (i = 0; i < cards.length; i++) {
+			c = cards[i];
+			if (getComputedStyle(c).position !== 'sticky') continue;
+			base = parseFloat(getComputedStyle(c).top) || 0;
+			h = c.offsetHeight;
+			if (base + h > vh - 8) c.style.top = Math.round(vh - h - 8) + 'px';
+		}
+	};
+	var t; var ask = function () { clearTimeout(t); t = setTimeout(fit, 120); };
+	window.addEventListener('load', fit);
+	window.addEventListener('resize', ask);
+	if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+	fit();
+})();
