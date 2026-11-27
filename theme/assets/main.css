@@ -739,3 +739,6 @@ body.is-ready .fv-sub{transition-delay:.4s}
   .fv-stage{padding-top:24px;padding-bottom:40px}
   .fv-scroll{display:none}
 }
+/* フォームの入口ボタンの題名と説明：Chrome 系は文節で折る。効かないブラウザ（iPhone）は main.js が言葉のまとまりで包むので、まとまりの間で折れるようにする */
+.ct-go-title,.ct-go-lead{word-break:auto-phrase}
+@supports not (word-break:auto-phrase){.ct-go-lead{word-break:normal}}
