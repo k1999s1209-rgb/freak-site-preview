@@ -716,3 +716,26 @@ body.is-ready .fv-sub{transition-delay:.4s}
   .ft-bottom>*{padding-block:6px}
   .ft-pp,.ft-top{padding-block:11px}
 }
+
+/* 2026-11-28 最後の見直し（スマホ・PC の総点検で見つかった5点） */
+/* ① フォーム2種の題名の上「● CONTACT ／ PRODUCTION」：3列の箱に4つ入って後半が次の行に落ちていた → 1行に並べる */
+.sec-cpage .sec-scene{display:flex;flex-wrap:wrap;align-items:center;column-gap:10px}
+.sec-cpage .cp-sep::before{margin:0 .1em}
+/* ⑤ 上の固定メニュー：下の文字がロゴの後ろに透けて重なって見える → 透け具合を弱める */
+.site-header{background:rgba(243,241,236,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* ④ 見出しの「」の中（マーカー）は途中で折らない */
+.t-mark{white-space:nowrap}
+@media (min-width:901px){
+  /* ② PC の最初の画面：大見出しの最後の字が写真の枠に食い込んでいた → 文字の列を広げて、枠との間を空ける */
+  .fv-in{grid-template-columns:46fr 54fr}
+}
+@media (min-width:901px) and (max-height:820px){
+  /* ③ 高さの低いノート PC：最初の画面にボタンまで入るように、余白と文字を詰める */
+  .sec-fv{min-height:100svh;padding:calc(var(--hdr) + 22px) 0 44px}
+  .sec-fv .fv-eyebrow{margin-bottom:12px}
+  .fv-title{font-size:clamp(34px,min(5.2vw,8.6vh),96px);line-height:1.2}
+  .fv-lead{margin-top:16px;font-size:15px;line-height:1.75}
+  .fv-btns{margin-top:22px}
+  .fv-stage{padding-top:24px;padding-bottom:40px}
+  .fv-scroll{display:none}
+}

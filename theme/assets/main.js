@@ -366,14 +366,18 @@
 	if (window.CSS && CSS.supports && CSS.supports('word-break', 'auto-phrase')) return;
 	if (!window.Intl || !Intl.Segmenter) return;
 	var seg = new Intl.Segmenter('ja', { granularity: 'word' });
-	var JA = /[぀-ヿ一-鿿]/, HEAD = /^[゠-ヿ一-鿿A-Za-z0-9０-９Ａ-Ｚａ-ｚ「『（]/, SPACE = /^\s+$/, OPEN = /[「『（]$/;
+	var KANJI = /[一-鿿]/, JA = /[぀-ヿ一-鿿]/, HEAD = /^[゠-ヿ一-鿿A-Za-z0-9０-９Ａ-Ｚａ-ｚ「『（]/, SPACE = /^\s+$/, OPEN = /[「『（]$/;
 	function chunks(text) {
 		var out = [], cur = '';
 		var it = seg.segment(text)[Symbol.iterator](), s;
 		while (!(s = it.next()).done) {
 			var t = s.value.segment;
 			if (SPACE.test(t)) { if (cur) out.push(cur); out.push(t); cur = ''; continue; }
-			var startsNew = HEAD.test(t) && cur && !OPEN.test(cur);
+			var startsNew = HEAD.test(t) && t.charAt(0) !== '・' && t.charAt(0) !== 'ー' && cur && !OPEN.test(cur);
+			/* 2026-11-28 「担当／者」「企業／連携」のように漢字の言葉の途中で折れないよう、漢字が続く間は 1 つにまとめる（8 文字まで） */
+			if (startsNew && KANJI.test(cur.slice(-1)) && KANJI.test(t.charAt(0)) && cur.length + t.length <= 8) startsNew = false;
+			/* 2026-11-28 「ご／相談」「お／気軽に」のように頭の「お・ご」だけ前の行に残らないよう、次の言葉の側に付ける */
+			if (startsNew && KANJI.test(t.charAt(0)) && /(^|[ぁ-ん、。・])[おご]$/.test(cur)) { if (cur.length > 1) out.push(cur.slice(0, -1)); cur = cur.slice(-1) + t; continue; }
 			if (startsNew || (cur.length + t.length > 14 && !/^[、。・」』）！？]/.test(t))) { if (cur) out.push(cur); cur = t; } else { cur += t; }
 		}
 		if (cur) out.push(cur);
@@ -382,8 +386,8 @@
 	var nodes = [], w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n;
 	while ((n = w.nextNode())) {
 		var p = n.parentElement;
-		if (!p || !p.closest('h1,h2,h3,p,dd,dt,li,small') || p.closest('script,style,.np,[aria-hidden="true"],button,input,textarea,select,label')) continue;
-		if (n.nodeValue.trim().length < 12 || !JA.test(n.nodeValue)) continue;
+		if (!p || !p.closest('h1,h2,h3,p,dd,dt,li,small,.ct-go-title,.ct-go-lead') || p.closest('script,style,.np,[aria-hidden="true"],button,input,textarea,select,label')) continue;
+		if (n.nodeValue.trim().length < (p.closest('.ct-go-title,.ct-go-lead') ? 6 : 12) || !JA.test(n.nodeValue)) continue;
 		if (/flex|grid/.test(getComputedStyle(p).display)) continue; // 横並びの箱の直下の文字は包まない（包むと 1 つずつ並んで折り返さなくなる）
 		nodes.push(n);
 	}
